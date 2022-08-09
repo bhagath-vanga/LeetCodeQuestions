@@ -1,0 +1,104 @@
+// https://leetcode.com/problems/largest-rectangle-in-histogram/
+
+//Brute-Force Approach
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        
+        int n = heights.length;
+        int max_area = 0;
+            
+            for(int i=0;i<n;i++){
+            
+                    int left = i;
+                    int right = i;
+                    
+                    while(left>=0 && heights[left]>=heights[i]){
+                            left--;
+                    }
+                    
+                    while(right<n && heights[right]>=heights[i]){
+                            right++;
+                    }
+                    
+                    int cur_area = (heights[i] * ( (right-1) - (left+1) +1 );
+                    
+                    max_area = Math.max(max_area,cur_area);
+            }
+            
+     return max_area;
+    }
+}
+
+ //TC:O(N**2)
+ //SC:O(1)   //No Extra Memory is used
+ 
+ 
+//Optimized - Approach 
+ 
+ class Solution {
+    Stack<Integer> s = new Stack<>();
+    public int largestRectangleArea(int[] heights) {
+    
+           int n = heights.length;
+           int[] prev = new int[n];
+           int[] next = new int[n];
+           
+           previousSmall(n,heights,prev);
+           s.clear();                           //to clear the entire stack
+           nextSmall(n,heights,next); 
+           
+           int max_area = 0; 
+            
+           for(int i=0;i<n;i++){
+                   int cur_area = heights[i] * ((next[i]-1) - (prev[i]+1) + 1);
+                   max_area = Math.max(max_area,cur_area);
+           } 
+        return max_area;
+    }
+        
+    private void previousSmall(int n, int[] heights, int[] prev){
+            
+          for(int i=0;i<n;i++){
+                  
+                  while(!s.isEmpty() && heights[s.peek()]>=heights[i]){
+                          s.pop();
+                  }
+                  
+                  if(s.isEmpty()){
+                          prev[i]=-1;
+                  }
+                  else{
+                          prev[i]=s.peek();
+                  }
+                  
+                  s.push(i);
+          }
+            return ;
+    }
+        
+    private void nextSmall(int n, int[] heights, int[] next){
+            
+          for(int i=n-1;i>=0;i--){
+                  
+                  while(!s.isEmpty() && heights[s.peek()]>=heights[i]){
+                          s.pop();
+                  }
+                  
+                  if(s.isEmpty()){
+                          next[i]=n;
+                  }
+                  else{
+                          next[i]=s.peek();
+                  }
+                  
+                  s.push(i);
+          }
+            return ;
+    }    
+        
+}
+
+//TC: O(N) + O(N) + O(N)  ( For traverseing the height bar + For storing the PreviousSmall + For storing the NextSmall)
+//SC: O(N) (For the stack Memory)
+
