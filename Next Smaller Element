@@ -1,0 +1,57 @@
+// https://www.geeksforgeeks.org/next-smaller-element/ 
+
+//Brute-Force Approach
+
+class Solution {
+	public static int[] help_classmate(int arr[], int n) 
+	{ 
+	    // Your code goes here
+    
+	    for(int i=0;i<n;i++){
+	        int pick=-1;
+	        for(int j=i+1;j<n;j++){
+	            if(arr[j]<arr[i]){
+	                pick=arr[j];
+	                break;
+	            }
+	        }
+	        marks[i]=pick;
+	    }
+	    return marks;
+	} 
+}
+
+//TC:O(N*N)
+//SC:O(1)
+
+
+//Optimized Approach
+
+class Solution {
+	public static int[] help_classmate(int arr[], int n) 
+	{ 
+	    // Your code goes here
+	    
+	    int[] marks = new int[n];
+	    Stack<Integer> s = new Stack<Integer>();
+	    
+	    for(int i=n-1;i>=0;i--){
+	        
+	        while(!s.isEmpty() && s.peek()>=arr[i]){
+	            s.pop();
+	        }
+	        
+	        if(s.isEmpty()){
+	            marks[i]=-1;
+	        }
+	        else{
+	            marks[i]=s.peek();
+	        }
+	        s.push(arr[i]);
+	    }
+	    return marks;
+  }
+}
+
+//TC:O(N)
+//SC:O(N) //When the array is in Ascending Order
