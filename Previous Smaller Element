@@ -1,0 +1,61 @@
+// https://www.geeksforgeeks.org/find-the-nearest-smaller-numbers-on-left-side-in-an-array/
+
+// Brute-Force Approach
+
+class Solution{
+    static List<Integer> leftSmaller(int n, int a[])
+    {
+        //code here
+        List<Integer> ans = new ArrayList<Integer>();
+        
+        for(int i=0;i<n;i++){
+            int element =-1;
+            for(int j=i-1;j>=0;j--){
+                if(a[j]<a[i]){
+                    element=a[j];
+                    break;
+                }
+            }
+            ans.add(ele);
+        } 
+    return ans;
+    }
+}
+
+//TC:O(N*N)
+//SC:O(N) //For the ArrayList
+
+// Optimized-Approach
+
+class Solution{
+    static List<Integer> leftSmaller(int n, int a[])
+    {
+        //code here
+        
+        List<Integer> ans = new ArrayList<Integer>();
+        
+        Stack<Integer> s = new Stack<>();
+        
+        for(int i=0;i<n;i++){
+            
+            while(!s.isEmpty() && s.peek()>=a[i]){
+                s.pop();
+            }
+            
+            if(s.isEmpty()){
+                ans.add(-1);
+            }
+            else{
+                ans.add(s.peek());
+            }
+            
+            s.push(a[i]);
+        } 
+     return ans;
+    }
+}
+
+//TC:O(N)
+//SC:O(N) + O(N) // (for the ArrayList and for Stack)
+
+
